@@ -1,0 +1,10 @@
+RelateAnything/
+models/
+weights/
+*.onnx
+*.pt
+*.docx
+kernel.errors.txt
+__pycache__/
+.pytest_cache/
+.git/

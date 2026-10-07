@@ -1,0 +1,14 @@
+# Application dependencies (PyTorch and RelateAnything are installed by
+# setup.sh / Dockerfile from dedicated indexes, see comments there).
+ultralytics>=8.4,<9
+# ByteTrack association solver used by ultralytics' tracker.
+lap>=0.5.12
+gradio>=5,<7
+onnx>=1.22
+onnxscript>=0.5
+openvino>=2025.3
+opencv-python>=4.10
+numpy>=2.0
+huggingface_hub>=1.0
+python-docx>=1.1
+pytest>=8.0

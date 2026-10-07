@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.docx binary
+*.onnx binary
+*.pt binary

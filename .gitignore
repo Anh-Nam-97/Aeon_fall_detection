@@ -1,0 +1,12 @@
+RelateAnything/
+models/
+weights/
+*.pt
+*.onnx
+kernel.errors.txt
+__pycache__/
+.pytest_cache/
+annotated_output.*
+
+# Internal documents - not published
+docs/

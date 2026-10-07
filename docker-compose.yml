@@ -1,0 +1,68 @@
+# Aeon_fall_detection - production deployment on an NVIDIA GPU host.
+#
+#   docker compose up -d --build            # GPU service (torch_gpu)
+#   docker compose --profile export run --rm export   # build ONNX artifacts
+#
+# Requires: NVIDIA driver >= 575 and NVIDIA Container Toolkit
+# (`nvidia-ctk runtime configure --runtime=docker`).
+
+x-gpu: &gpu
+  # Compose-spec device reservation: the portable way to pass GPUs through.
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu, compute, utility, video]
+  # Explicit runtime for hosts whose daemon does not default to nvidia.
+  runtime: nvidia
+
+services:
+  aeon-fall-detection:
+    <<: *gpu
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RA_REF: main
+    image: aeon/fall-detection:1.0.0
+    container_name: aeon-fall-detection
+    restart: unless-stopped
+    ports:
+      - "7860:7860"
+    environment:
+      AEON_MODE: torch_gpu
+      AEON_HOST: 0.0.0.0
+      AEON_PORT: "7860"
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
+      # Avoid allocator fragmentation during long 24/7 runs.
+      PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+    volumes:
+      - aeon-data:/data
+    # PyTorch data loaders and OpenCV use shared memory; Docker's 64 MB
+    # default is too small for 4K frames.
+    shm_size: "2gb"
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # One-off job: export ONNX/OpenVINO artifacts into the shared volume, e.g.
+  # to copy them to the i7-1260P edge devices.
+  export:
+    <<: *gpu
+    image: aeon/fall-detection:1.0.0
+    profiles: ["export"]
+    command: ["python", "export_onnx.py", "--openvino",
+              "--out-dir", "/data/models/relsgg-vits16plus"]
+    volumes:
+      - aeon-data:/data
+
+volumes:
+  aeon-data:
