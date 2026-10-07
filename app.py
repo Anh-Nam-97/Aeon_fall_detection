@@ -303,7 +303,10 @@ def build_ui(registry: EngineRegistry, default_mode: InferenceMode
             "Zero-shot fall detection: **YOLO-World (YOLOv8)** finds people "
             "and the floor, **RelateAnything** scores relations such as "
             "*person - lying on - floor*, and a temporal filter confirms "
-            "the fall.")
+            "the fall.\n\n"
+            "Source code (AGPL-3.0): "
+            "[github.com/Anh-Nam-97/Aeon_fall_detection]"
+            "(https://github.com/Anh-Nam-97/Aeon_fall_detection)")
         with gr.Row():
             mode_dd = gr.Dropdown(modes, value=default_mode.value,
                                   label="Inference mode")

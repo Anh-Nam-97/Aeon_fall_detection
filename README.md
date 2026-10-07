@@ -56,3 +56,20 @@ upright: standing on, walking on, walking past, standing beside
 * Python 3.12 is required because RelateAnything declares
   `requires-python >= 3.12`.
 * RelateAnything and Ultralytics are AGPL-3.0.
+
+## License
+
+Copyright (C) 2026 Anh-Nam-97
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version. It is distributed WITHOUT ANY WARRANTY; see [LICENSE](LICENSE)
+for the full text.
+
+The project is AGPL-3.0 because it builds on
+[Ultralytics](https://github.com/ultralytics/ultralytics) (YOLO-World) and
+[RelateAnything](https://github.com/Maelic/RelateAnything), both AGPL-3.0.
+If you run a modified version as a network service (for example the Gradio
+UI), section 13 requires offering its users the corresponding source code;
+the UI header links to this repository for that purpose.
